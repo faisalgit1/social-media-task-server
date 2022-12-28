@@ -43,16 +43,19 @@ async function run() {
             res.send({ token })
         })
 
+        app.get('/addpost', async (req, res) => {
+            const query = {}
+            const cursor = socialMediaCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+        });
+
         app.post('/addpost', async (req, res) => {
             const addPost = req.body;
             const result = await socialMediaCollection.insertOne(addPost);
             res.send(result);
         });
-        app.post('/review', async (req, res) => {
-            const addreview = req.body;
-            const result = await reviewCollection.insertOne(addreview);
-            res.send(result);
-        });
+
 
 
     }

@@ -50,7 +50,18 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         });
-
+        app.get('/addpost/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await socialMediaCollection.findOne(query);
+            res.send(result);
+        });
+        app.get('/allcomments', async (req, res) => {
+            const query = {}
+            const cursor = commentsCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+        });
         app.post('/addpost', async (req, res) => {
             const addPost = req.body;
             const result = await socialMediaCollection.insertOne(addPost);
@@ -61,6 +72,7 @@ async function run() {
             const result = await commentsCollection.insertOne(addcomment);
             res.send(result);
         });
+
 
 
     }

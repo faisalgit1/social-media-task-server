@@ -34,6 +34,7 @@ function verifyJWT(req, res, next) {
 async function run() {
     try {
         const socialMediaCollection = client.db('socialMediaTask').collection('addpost');
+        const commentsCollection = client.db('socialMediaTask').collection('comments');
 
         app.post('/jwt', (req, res) => {
             const user = req.body;
@@ -55,7 +56,11 @@ async function run() {
             const result = await socialMediaCollection.insertOne(addPost);
             res.send(result);
         });
-
+        app.post('/comment', async (req, res) => {
+            const addcomment = req.body;
+            const result = await commentsCollection.insertOne(addcomment);
+            res.send(result);
+        });
 
 
     }

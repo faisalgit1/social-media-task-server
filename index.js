@@ -35,6 +35,7 @@ async function run() {
     try {
         const socialMediaCollection = client.db('socialMediaTask').collection('addpost');
         const commentsCollection = client.db('socialMediaTask').collection('comments');
+        const userCollection = client.db('socialMediaTask').collection('users');
 
         app.post('/jwt', (req, res) => {
             const user = req.body;
@@ -44,13 +45,20 @@ async function run() {
             res.send({ token })
         })
 
+        // app.get('/show', async (req, res) => {
+        //     const query = {}
+        //     const cursor = commentsCollection.find(query).sort({ _id: -1 });
+        //     const result = await cursor.limit(1).toArray()
+        //     res.send(result)
+        // })
+
         app.get('/addpost', async (req, res) => {
             const query = {}
             const cursor = socialMediaCollection.find(query);
             const result = await cursor.toArray();
             res.send(result);
         });
-        app.get('/addpost/:id', async (req, res) => {
+        app.get('/media/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await socialMediaCollection.findOne(query);
@@ -72,6 +80,20 @@ async function run() {
             const result = await commentsCollection.insertOne(addcomment);
             res.send(result);
         });
+
+        // about
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            console.log(user)
+            const result = await userCollection.insertOne(user);
+            res.send(result);
+        });
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const cursor = userCollection.find(query);
+            const users = await cursor.toArray();
+            res.send(users)
+        })
 
 
 
